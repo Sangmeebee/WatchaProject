@@ -17,6 +17,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
 import io.reactivex.rxjava3.schedulers.Schedulers
+import io.reactivex.rxjava3.subjects.BehaviorSubject
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -44,10 +45,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val favorites: LiveData<List<Track>>
         get() = _favorites
 
+    val loadingSubject = BehaviorSubject.createDefault(false)
+
     fun callTrack() {
         trackRepository.getTrack(term, entity, limit)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { loadingSubject.onNext(true) }
+            .doOnTerminate { loadingSubject.onNext(false) }
             .subscribe({
                 cacheTrack(it.tracks)
             }, { t ->

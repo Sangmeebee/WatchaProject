@@ -48,10 +48,20 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
+
+        nv_menu.setOnNavigationItemReselectedListener {
+        }
     }
 
     private fun initViewModel() {
         vm.getCacheTrack()
+
+        vm.loadingSubject
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                pb_loading.isVisible = it
+            }
+            .addTo(compositeDisposable)
     }
 
     private fun unbindViewModel() {
