@@ -10,12 +10,14 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.sangmee.watchaproject.R
+import com.sangmee.watchaproject.model.Track
+import com.sangmee.watchaproject.ui.MainViewModel
 import kotlinx.android.synthetic.main.fragment_track.*
 
-class TrackFragment : Fragment() {
+class TrackFragment : Fragment(), TrackAdapter.OnClickListener {
 
     private val trackAdapter = TrackAdapter()
-    private val vm by activityViewModels<TrackViewModel>()
+    private val vm by activityViewModels<MainViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,7 +33,9 @@ class TrackFragment : Fragment() {
         initViewModel()
     }
 
-    private fun initView(){
+    private fun initView() {
+        trackAdapter.onClickListener = this
+
         rv_track.apply {
             adapter = trackAdapter
             setHasFixedSize(true)
@@ -47,8 +51,13 @@ class TrackFragment : Fragment() {
         })
     }
 
+    override fun onClickToggleBtn(track: Track, isFavorite: Boolean) {
+        track.isFavorite = isFavorite
+        vm.updateFavoriteTrack(track)
+    }
+
     override fun onDestroy() {
-        vm.unBindViewModel()
+        vm.unbindViewModel()
         super.onDestroy()
     }
 }

@@ -71,6 +71,7 @@
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/toggle_selector_background"
+                android:checked="@{track.favorite}"
                 android:textOff="@null"
                 android:textOn="@null"
                 bind:layout_constraintBottom_toBottomOf="parent"
