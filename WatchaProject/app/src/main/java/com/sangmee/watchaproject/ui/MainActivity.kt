@@ -5,7 +5,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.sangmee.watchaproject.R
-import com.sangmee.watchaproject.ui.favorite.FavoriteFragment
+import com.sangmee.watchaproject.ui.track.FavoriteFragment
 import com.sangmee.watchaproject.ui.track.TrackFragment
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -14,6 +14,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
+    private val trackFragment by lazy { TrackFragment() }
+    private val favoriteFragment by lazy { FavoriteFragment() }
     private val vm by viewModels<MainViewModel>()
     private val compositeDisposable = CompositeDisposable()
 
@@ -31,18 +33,34 @@ class MainActivity : AppCompatActivity() {
 
     private fun initView() {
         //BottomNavigationView 세팅
-        supportFragmentManager.beginTransaction().add(R.id.fl_container, TrackFragment()).commit()
+        supportFragmentManager.beginTransaction().add(R.id.fl_container, trackFragment).commit()
 
         nv_menu.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.trackItem -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fl_container, TrackFragment()).commit()
+                    supportFragmentManager.beginTransaction().apply {
+                        if (trackFragment.isAdded) {
+                            show(trackFragment)
+                        } else {
+                            add(R.id.fl_container, trackFragment)
+                        }
+                        hide(favoriteFragment)
+                    }.commit()
+
+                    vm.getCacheTrack()
                     true
                 }
                 R.id.favoriteItem -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fl_container, FavoriteFragment()).commit()
+                    supportFragmentManager.beginTransaction().apply {
+                        if (favoriteFragment.isAdded) {
+                            show(favoriteFragment)
+                        } else {
+                            add(R.id.fl_container, favoriteFragment)
+                        }
+                        hide(trackFragment)
+                    }.commit()
+
+                    vm.getAllFavoriteTrack()
                     true
                 }
                 else -> false
@@ -55,6 +73,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initViewModel() {
         vm.getCacheTrack()
+        vm.getAllFavoriteTrack()
 
         vm.loadingSubject
             .observeOn(AndroidSchedulers.mainThread())
