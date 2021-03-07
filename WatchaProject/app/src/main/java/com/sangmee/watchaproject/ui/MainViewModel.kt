@@ -91,6 +91,31 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         )
     }
 
+    fun getAllFavoriteTrack() {
+        compositeDisposable.add(
+            favoriteRepository.getAllFavoriteTrack().subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ _favorites.value = it },
+                    { t -> Log.e("cache_track_error", t.message.toString()) },
+                    { _favorites.value = listOf() })
+        )
+    }
+
+    fun updateFavoriteTrack(track: Track) {
+        compositeDisposable.add(
+            favoriteRepository.saveFavoriteTrack(track).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    if (track.isFavorite!!) {
+                        Log.d("save_favorite", "즐겨찾기 저장")
+                    } else {
+                        Log.d("delete_favorite", "즐겨찾기 삭제")
+                    }
+                },
+                    { t -> Log.e("save_favorite_error", t.message.toString()) })
+        )
+    }
+
     fun unbindViewModel() {
         compositeDisposable.clear()
     }
