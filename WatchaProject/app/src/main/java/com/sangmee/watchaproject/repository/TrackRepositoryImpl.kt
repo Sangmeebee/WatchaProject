@@ -4,11 +4,17 @@ import com.sangmee.watchaproject.datasource.local.TrackLocalDataSource
 import com.sangmee.watchaproject.datasource.remote.TrackRemoteDataSource
 import com.sangmee.watchaproject.model.Result
 import com.sangmee.watchaproject.model.Track
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.core.Single
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class TrackRepositoryImpl(
+class TrackRepositoryImpl @Inject constructor(
     private val trackRemoteDataSource: TrackRemoteDataSource,
     private val trackLocalDataSource: TrackLocalDataSource
 ) : TrackRepository {
@@ -25,3 +31,14 @@ class TrackRepositoryImpl(
         return trackLocalDataSource.saveAndUpdateAll(tracks)
     }
 }
+
+
+@Module
+@InstallIn(ApplicationComponent::class)
+abstract class TrackRepositoryModule {
+
+    @Binds
+    @Singleton
+    abstract fun bindTrackRepository(trackRepositoryImpl: TrackRepositoryImpl): TrackRepository
+}
+

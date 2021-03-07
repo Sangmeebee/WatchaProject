@@ -1,36 +1,23 @@
 package com.sangmee.watchaproject.ui
 
-import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.room.Room
-import com.sangmee.watchaproject.datasource.local.FavoriteLocalDataSourceImpl
-import com.sangmee.watchaproject.datasource.local.TrackLocalDataSourceImpl
-import com.sangmee.watchaproject.datasource.remote.TrackRemoteDataSourceImpl
+import androidx.lifecycle.ViewModel
 import com.sangmee.watchaproject.model.Track
-import com.sangmee.watchaproject.repository.FavoriteRepositoryImpl
-import com.sangmee.watchaproject.repository.TrackRepositoryImpl
-import com.sangmee.watchaproject.service.AppDatabase
+import com.sangmee.watchaproject.repository.FavoriteRepository
+import com.sangmee.watchaproject.repository.TrackRepository
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 
-class MainViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val db =
-        Room.databaseBuilder(application, AppDatabase::class.java, "track-db").build()
-
-    private val trackRepository by lazy {
-        TrackRepositoryImpl(
-            TrackRemoteDataSourceImpl(),
-            TrackLocalDataSourceImpl(db)
-        )
-    }
-    private val favoriteRepository by lazy { FavoriteRepositoryImpl(FavoriteLocalDataSourceImpl(db)) }
+class MainViewModel @ViewModelInject constructor(
+    private val trackRepository: TrackRepository,
+    private val favoriteRepository: FavoriteRepository
+) : ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
     private val term = "greenday"

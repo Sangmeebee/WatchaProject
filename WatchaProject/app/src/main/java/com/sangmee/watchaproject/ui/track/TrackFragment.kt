@@ -12,8 +12,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sangmee.watchaproject.R
 import com.sangmee.watchaproject.model.Track
 import com.sangmee.watchaproject.ui.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_track.*
 
+@AndroidEntryPoint
 class TrackFragment : Fragment(), TrackAdapter.OnClickListener {
 
     private val trackAdapter = TrackAdapter()

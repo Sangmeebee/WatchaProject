@@ -7,11 +7,13 @@ import androidx.core.view.isVisible
 import com.sangmee.watchaproject.R
 import com.sangmee.watchaproject.ui.track.FavoriteFragment
 import com.sangmee.watchaproject.ui.track.TrackFragment
+import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
 import kotlinx.android.synthetic.main.activity_main.*
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private val trackFragment by lazy { TrackFragment() }
