@@ -24,7 +24,8 @@ class TrackAdapter : RecyclerView.Adapter<TrackAdapter.TrackViewHolder>() {
 
         val viewHolder = TrackViewHolder(binding)
 
-        viewHolder.itemView.tb_favorite.setOnCheckedChangeListener { _, isChecked ->
+        viewHolder.itemView.tb_favorite.setOnClickListener {
+            val isChecked = viewHolder.itemView.tb_favorite.isChecked
             if (isChecked) {
                 trackList[viewHolder.adapterPosition].let {
                     onClickListener?.onClickToggleBtn(it, true)
