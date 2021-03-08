@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.sangmee.watchaproject.R
+import com.sangmee.watchaproject.model.Track
 import com.sangmee.watchaproject.ui.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -17,7 +18,7 @@ import kotlinx.android.synthetic.main.fragment_track.*
 @AndroidEntryPoint
 class TrackFragment : Fragment() {
 
-    private val trackAdapter = TrackAdapter()
+    private val trackAdapter = TrackAdapter(::setIsFavorite)
     private val vm by activityViewModels<MainViewModel>()
     private val compositeDisposable = CompositeDisposable()
 
@@ -50,10 +51,9 @@ class TrackFragment : Fragment() {
         })
     }
 
-//    override fun onClickToggleBtn(track: Track, isFavorite: Boolean) {
-//        track.isFavorite = isFavorite
-//        vm.updateFavoriteTrack(track)
-//    }
+    private fun setIsFavorite(track: Track) {
+        vm.updateFavoriteTrack(track)
+    }
 
     override fun onDestroyView() {
         vm.unbindViewModel()

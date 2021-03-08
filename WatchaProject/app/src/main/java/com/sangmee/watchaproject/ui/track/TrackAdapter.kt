@@ -10,7 +10,8 @@ import com.sangmee.watchaproject.R
 import com.sangmee.watchaproject.databinding.TrackItemBinding
 import com.sangmee.watchaproject.model.Track
 
-class TrackAdapter : PagingDataAdapter<Track, TrackAdapter.TrackViewHolder>(COMPARATOR) {
+class TrackAdapter(val setIsFavorite: (Track) -> Unit) :
+    PagingDataAdapter<Track, TrackAdapter.TrackViewHolder>(COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val binding = DataBindingUtil.inflate<TrackItemBinding>(
@@ -19,6 +20,7 @@ class TrackAdapter : PagingDataAdapter<Track, TrackAdapter.TrackViewHolder>(COMP
             parent,
             false
         )
+        binding.adapter = this@TrackAdapter
 
         return TrackViewHolder(binding)
     }

@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/tools"
     xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data>
+
+        <variable
+            name="adapter"
+            type="com.sangmee.watchaproject.ui.track.TrackAdapter" />
 
         <variable
             name="track"
@@ -74,6 +79,8 @@
                 android:checked="@{track.favorite}"
                 android:textOff="@null"
                 android:textOn="@null"
+                app:setIsFavorite="@{adapter.setIsFavorite}"
+                app:setTrack="@{track}"
                 bind:layout_constraintBottom_toBottomOf="parent"
                 bind:layout_constraintEnd_toEndOf="parent" />
 

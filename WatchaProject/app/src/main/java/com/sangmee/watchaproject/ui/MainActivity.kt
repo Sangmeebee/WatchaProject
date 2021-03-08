@@ -76,6 +76,7 @@ class MainActivity : AppCompatActivity() {
     private fun initViewModel() {
         vm.getCacheTrack()
         vm.getAllFavoriteTrack()
+        vm.callTrack()
 
         vm.loadingSubject
             .observeOn(AndroidSchedulers.mainThread())
