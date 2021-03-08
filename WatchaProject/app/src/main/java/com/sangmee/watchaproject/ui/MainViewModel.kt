@@ -5,6 +5,8 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.rxjava3.cachedIn
 import com.sangmee.watchaproject.model.Track
 import com.sangmee.watchaproject.repository.FavoriteRepository
 import com.sangmee.watchaproject.repository.TrackRepository
@@ -13,6 +15,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 class MainViewModel @ViewModelInject constructor(
     private val trackRepository: TrackRepository,
@@ -46,15 +49,9 @@ class MainViewModel @ViewModelInject constructor(
             .addTo(compositeDisposable)
     }
 
-    fun getCacheTrack() {
-        compositeDisposable.add(
-            trackRepository.getAllTrackByRoom().subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ _tracks.value = it },
-                    { t -> Log.e("cache_track_error", t.message.toString()) },
-                    { _tracks.value = listOf() })
-        )
-    }
+    fun getCacheTrack() =
+        trackRepository.getAllTrackByRoom().cachedIn(viewModelScope)
+
 
     private fun cacheTrack(tracks: List<Track>) {
 
@@ -80,15 +77,8 @@ class MainViewModel @ViewModelInject constructor(
         )
     }
 
-    fun getAllFavoriteTrack() {
-        compositeDisposable.add(
-            favoriteRepository.getAllFavoriteTrack().subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ _favorites.value = it },
-                    { t -> Log.e("cache_track_error", t.message.toString()) },
-                    { _favorites.value = listOf() })
-        )
-    }
+    fun getAllFavoriteTrack() = favoriteRepository.getAllFavoriteTrack().cachedIn(viewModelScope)
+
 
     fun updateFavoriteTrack(track: Track) {
         compositeDisposable.add(
