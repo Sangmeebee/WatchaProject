@@ -6,6 +6,5 @@ import io.reactivex.rxjava3.core.Maybe
 
 interface FavoriteLocalDataSource {
 
-    fun getAllFavoriteTrack(): Maybe<List<Track>>
     fun saveFavoriteTrack(track: Track): Completable
 }

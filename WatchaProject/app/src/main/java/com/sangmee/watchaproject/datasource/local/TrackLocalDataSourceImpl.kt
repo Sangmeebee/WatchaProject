@@ -7,16 +7,11 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.Maybe
 import javax.inject.Inject
 import javax.inject.Singleton
 
 class TrackLocalDataSourceImpl @Inject constructor(private val trackDao: TrackDao) :
     TrackLocalDataSource {
-
-    override fun getAllTrackByRoom(): Maybe<List<Track>> {
-        return trackDao.getAll()
-    }
 
     override fun saveAndUpdateAll(tracks: List<Track>): Completable {
         return trackDao.insertAll(tracks)

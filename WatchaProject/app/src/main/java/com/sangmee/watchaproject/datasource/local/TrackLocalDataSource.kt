@@ -6,6 +6,5 @@ import io.reactivex.rxjava3.core.Maybe
 
 interface TrackLocalDataSource {
 
-    fun getAllTrackByRoom(): Maybe<List<Track>>
     fun saveAndUpdateAll(tracks: List<Track>): Completable
 }
