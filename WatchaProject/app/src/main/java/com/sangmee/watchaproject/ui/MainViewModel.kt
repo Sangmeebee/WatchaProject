@@ -20,9 +20,6 @@ class MainViewModel @ViewModelInject constructor(
 ) : ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
-    private val term = "greenday"
-    private val entity = "song"
-    private val limit = 30
 
     private val _tracks = MutableLiveData<List<Track>>()
     val tracks: LiveData<List<Track>>
@@ -35,7 +32,7 @@ class MainViewModel @ViewModelInject constructor(
     val loadingSubject = BehaviorSubject.createDefault(false)
 
     fun callTrack() {
-        trackRepository.getTrack(term, entity, limit)
+        trackRepository.getTrack(DEFAULT_TERM, DEFAULT_ENTITY)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { loadingSubject.onNext(true) }
@@ -110,5 +107,10 @@ class MainViewModel @ViewModelInject constructor(
 
     fun unbindViewModel() {
         compositeDisposable.clear()
+    }
+
+    companion object {
+        private const val DEFAULT_TERM = "greenday"
+        private const val DEFAULT_ENTITY = "song"
     }
 }

@@ -1,7 +1,9 @@
-package com.sangmee.watchaproject.service
+package com.sangmee.watchaproject.database
 
 import android.content.Context
 import androidx.room.Room
+import com.sangmee.watchaproject.service.FavoriteDao
+import com.sangmee.watchaproject.service.TrackDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

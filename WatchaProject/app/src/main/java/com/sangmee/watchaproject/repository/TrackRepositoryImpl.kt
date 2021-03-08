@@ -19,8 +19,8 @@ class TrackRepositoryImpl @Inject constructor(
     private val trackLocalDataSource: TrackLocalDataSource
 ) : TrackRepository {
 
-    override fun getTrack(term: String, entity: String, limit: Int): Single<Result> {
-        return trackRemoteDataSource.getTrack(term, entity, limit)
+    override fun getTrack(term: String, entity: String): Single<Result> {
+        return trackRemoteDataSource.getTrack(term, entity)
     }
 
     override fun getAllTrackByRoom(): Maybe<List<Track>> {

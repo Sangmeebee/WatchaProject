@@ -12,8 +12,8 @@ import javax.inject.Singleton
 
 class TrackRemoteDataSourceImpl @Inject constructor() : TrackRemoteDataSource {
 
-    override fun getTrack(term: String, entity: String, limit: Int): Single<Result> {
-        return RetrofitClient.getService().getTrack(term, entity, limit)
+    override fun getTrack(term: String, entity: String): Single<Result> {
+        return RetrofitClient.getService().getTrack(term, entity)
     }
 }
 

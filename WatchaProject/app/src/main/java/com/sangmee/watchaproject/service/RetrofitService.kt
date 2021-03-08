@@ -10,7 +10,6 @@ interface RetrofitService {
     @GET(".")
     fun getTrack(
         @Query("term") term: String,
-        @Query("entity") entity: String,
-        @Query("limit") limit: Int
+        @Query("entity") entity: String
     ): Single<Result>
 }

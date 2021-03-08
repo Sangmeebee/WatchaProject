@@ -12,7 +12,6 @@ interface TrackRepository {
     fun getTrack(
         @Query("term") term: String,
         @Query("entity") entity: String,
-        @Query("limit") limit: Int
     ): Single<Result>
 
     fun getAllTrackByRoom(): Maybe<List<Track>>
